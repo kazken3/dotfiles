@@ -21,3 +21,6 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 export PATH=/home/kazken/work/review/bin:/home/kazken/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:$GOPATH/bin
+source ~/.nvm/nvm.sh
+nvm use v0.12.4
+

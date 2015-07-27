@@ -177,6 +177,10 @@ NeoBundle 'idanarye/vim-merginal'
 
 NeoBundle 'itchyny/lightline.vim'
 
+
+" Experimental
+NeoBundle 'moro/vim-review'
+
 NeoBundleCheck
 
 " lightline
