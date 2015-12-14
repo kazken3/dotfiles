@@ -400,6 +400,11 @@ function! s:twitvim_my_settings()
     set nowrap
 endfunction
 
+augroup c-path
+    autocmd!
+    autocmd FileType c setlocal path=.,/usr/include,/usr/local/include,~/pebble-dev/PebbleSDK-3.2/Pebble/basalt/include
+augroup END
+
 
 "###vimrc end###
 
