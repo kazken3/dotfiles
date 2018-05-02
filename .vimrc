@@ -1,3 +1,16 @@
+if has('gui_macvim')
+ let g:macvim_skip_colorscheme=1
+ let g:no_gvimrc_example=1
+endif
+
+if has('macunix')
+  let mapleader = '¥'
+endif
+
+if !has('gui_running')
+  set t_Co=256
+endif
+
 
 "dein Scripts-----------------------------
 if &compatible
@@ -5,15 +18,15 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=/home/kazken/.vim/bundles/repos/github.com/Shougo/dein.vim
+set runtimepath+=$HOME/.vim/bundles/repos/github.com/Shougo/dein.vim
 
 " Required:
-if dein#load_state('/home/kazken/.vim/bundles')
-  call dein#begin('/home/kazken/.vim/bundles')
+if dein#load_state('$HOME/.vim/bundles')
+  call dein#begin('$HOME/.vim/bundles')
 
   " Let dein manage dein
   " Required:
-  call dein#add('/home/kazken/.vim/bundles/repos/github.com/Shougo/dein.vim')
+  call dein#add('$HOME/.vim/bundles/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
   call dein#add('Shougo/neosnippet.vim')
@@ -46,9 +59,18 @@ if dein#load_state('/home/kazken/.vim/bundles')
   call dein#add('kannokanno/previm')
 
   call dein#add('thinca/vim-quickrun')
+  call dein#add('itchyny/lightline.vim')
+
+  call dein#add('vim-scripts/vcscommand.vim')
+
+  call dein#add('racer-rust/vim-racer')
+  call dein#add('rust-lang/rust.vim')
+  call dein#add('vim-syntastic/syntastic')
+
+  
 
   " You can specify revision/branch/tag.
-  " call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+  " call dein#add('Shougo/deol.nvim', { 'rev': 'a1b5108fd' })
 
   " Required:
   call dein#end()
@@ -60,17 +82,12 @@ filetype plugin indent on
 syntax enable
 
 " If you want to install not installed plugins on startup.
-if dein#check_install()
-  call dein#install()
-endif
-
-if dein#tap('deoplete.nvim')
-  let g:deoplete#enable_at_startup = 1
-elseif dein#tap('neocomplete.vim')
-  let g:neocomplete#enable_at_startup = 1
-endif
+"if dein#check_install()
+"  call dein#install()
+"endif
 
 "End dein Scripts-------------------------
+
 syntax on
 "文字コードをUFT-8に設定
 set fenc=utf-8
@@ -84,18 +101,10 @@ set autoread
 set hidden
 " 入力中のコマンドをステータスに表示する
 set showcmd
-"文字コードをUFT-8に設定
-set fenc=utf-8
-" バックアップファイルを作らない
-set nobackup
-" スワップファイルを作らない
-set noswapfile
-" 編集中のファイルが変更されたら自動で読み直す
-set autoread
-" バッファが編集中でもその他のファイルを開けるように
-set hidden
-" 入力中のコマンドをステータスに表示する
-set showcmd
+" 現在のモードを表示する
+set showmode
+" 現在位置を表示
+set ruler
 
 " 行番号を表示
 set number
@@ -143,6 +152,28 @@ set hlsearch
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
 " 新しいwindowを下に
 "set splitbelow
+" Undoファイルを無効にする
+set noundofile
+
+
+if has('gui_running')
+" マウスを有効に
+  set mouse=a
+  set ttymouse=xterm2
+  
+  set guioptions=c
+  
+  set clipboard=unnamed,autoselect
+  
+  if has('mac')
+    " フォントはRicty for Powerlineの13
+"    set guifont=Ricty\ Regular\ for\ Powerline:h13
+
+    " 起動したときに最大化
+    autocmd BufEnter * macaction performZoom:
+  endif
+  
+endif
 
 colorscheme molokai
 hi Comment ctermfg=102
@@ -152,10 +183,14 @@ hi Visual  ctermbg=236
 inoremap <Leader>c <C-R>=strftime('%Y-%m-%dT%H:%M:%S+09:00')<CR>
 
 map <C-n> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 
 autocmd vimenter * NERDTree 
 autocmd vimenter * wincmd p
+
+" let NERDTreeQuitOnOpen = 1
+
 
 " neosnippet
 " Plugin key-mappings.
@@ -192,5 +227,71 @@ let g:quickrun_config._ = {
 \ }
 au FileType qf nnoremap <silent><buffer>q :quit<CR>
 
+autocmd QuickFixCmdPost *grep* cwindow
 
 "quickrun end
+" ctrlp
+let g:ctrlp_match_window = 'order:ttb,min:20,max:20,results:100' " マッチウインドウの設定. 「下部に表示, 大きさ20行で固定, 検索結果100件」
+let g:ctrlp_show_hidden = 1 " .(ドット)から始まるファイルも検索対象にする
+let g:ctrlp_types = ['fil'] "ファイル検索のみ使用
+let g:ctrlp_max_depth = 60
+let g:ctrlp_max_files  = 100000
+" カレントディレクトリを基準に検索
+nnoremap <silent> <Space>cf :CtrlPCurWD<CR>
+" カレントバッファのルートディレクトリを基準に検索(root:自動認識)
+nnoremap <silent> <Space>cF :CtrlPRoot<CR>
+" 最近使ったファイルから検索
+nnoremap <silent> <Space>cr :CtrlPMRUFiles<CR>
+" ctrlp end
+augroup PrevimSettings
+    autocmd!
+    autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
+
+nnoremap <C-]> g<C-]> 
+
+" for Tab
+" The prefix key.
+nnoremap    [Tag]   <Nop>
+nmap    t [Tag]
+" Tab jump
+for n in range(1, 9)
+  execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
+endfor
+" t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
+
+map <silent> [Tag]c :tablast <bar> tabnew<CR>
+" tc 新しいタブを一番右に作る
+map <silent> [Tag]x :tabclose<CR>
+" tx タブを閉じる
+map <silent> [Tag]n :tabnext<CR>
+" tn 次のタブ
+map <silent> [Tag]p :tabprevious<CR>
+" tp 前のタブ
+" Tab End
+
+set tags=./tags;
+
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_ignore_case = 1
+let g:neocomplete#enable_smart_case = 1
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns._ = '\h\w*'
+
+highlight Pmenu ctermbg=248 guibg=#606060
+highlight PmenuSel ctermbg=159 guifg=#dddd00 guibg=#1f82cd
+highlight PmenuSbar ctermbg=0 guibg=#d6d6d6
+
+" for rust racer
+let g:racer_cmd = "$HOME/.cargo/bin/racer"
+
+" for rust.vim
+let g:rustfmt_autosave = 1
+let g:rustfmt_command = '$HOME/.cargo/bin/rustfmt'
+
+" for syntastic
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['rust'] }
+let g:syntastic_rust_checkers = ['rustc', 'cargo']
+
