@@ -61,6 +61,8 @@ if dein#load_state('$HOME/.vim/bundles')
   call dein#add('kannokanno/previm')
 
   call dein#add('thinca/vim-quickrun')
+
+
   call dein#add('itchyny/lightline.vim')
 
   call dein#add('vim-scripts/vcscommand.vim')
@@ -68,6 +70,7 @@ if dein#load_state('$HOME/.vim/bundles')
   call dein#add('racer-rust/vim-racer')
   call dein#add('rust-lang/rust.vim')
   call dein#add('vim-syntastic/syntastic')
+  call dein#add('sebastianmarkow/deoplete-rust')
 
   
 
@@ -232,6 +235,7 @@ au FileType qf nnoremap <silent><buffer>q :quit<CR>
 autocmd QuickFixCmdPost *grep* cwindow
 
 "quickrun end
+
 "" ctrlp
 "let g:ctrlp_match_window = 'order:ttb,min:20,max:20,results:100' " マッチウインドウの設定. 「下部に表示, 大きさ20行で固定, 検索結果100件」
 "let g:ctrlp_show_hidden = 1 " .(ドット)から始まるファイルも検索対象にする
@@ -293,15 +297,17 @@ highlight Pmenu ctermbg=248 guibg=#606060
 highlight PmenuSel ctermbg=159 guifg=#dddd00 guibg=#1f82cd
 highlight PmenuSbar ctermbg=0 guibg=#d6d6d6
 
-" for rust racer
+" rust start
 let g:racer_cmd = "$HOME/.cargo/bin/racer"
-
-" for rust.vim
 let g:rustfmt_autosave = 1
 let g:rustfmt_command = '$HOME/.cargo/bin/rustfmt'
-
-" for syntastic
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['rust'] }
 let g:syntastic_rust_checkers = ['rustc', 'cargo']
 
+let g:deoplete#sources#rust#racer_binary='$HOME/.cargo/bin/racer'
+let g:deoplete#sources#rust#rust_source_path='$RUST_SRC_PATH'
+
+let g:deoplete#sources#rust#show_duplicates=1
+let g:deoplete#sources#rust#disable_keymap=1
+let g:deoplete#sources#rust#documentation_max_height=20
 
