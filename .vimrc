@@ -232,7 +232,12 @@ let g:quickrun_config._ = {
 \ }
 au FileType qf nnoremap <silent><buffer>q :quit<CR>
 
+set grepprg=grep\ -rnIH\ --exclude-dir=.svn\ --exclude-dir=.git
 autocmd QuickFixCmdPost *grep* cwindow
+
+nnoremap <expr> <Space>g ':vimgrep /\<' . expand('<cword>') . '\>/j **/*.' . expand('%:e')
+nnoremap <expr> <Space>G ':sil grep! ' . expand('<cword>') . ' *'
+
 
 "quickrun end
 
