@@ -21,7 +21,7 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 export PATH=$HOME/work/review/bin:$HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:$GOPATH/bin:~/pebble-dev/PebbleSDK-3.2/bin
-source ~/.nvm/nvm.sh
+#source ~/.nvm/nvm.sh
 #nvm use v0.12.4
 
 source $HOME/.cargo/env

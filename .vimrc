@@ -71,6 +71,8 @@ if dein#load_state('$HOME/.vim/bundles')
   call dein#add('rust-lang/rust.vim')
   call dein#add('vim-syntastic/syntastic')
   call dein#add('sebastianmarkow/deoplete-rust')
+  call dein#add('davidhalter/jedi-vim')
+
 
   
 
@@ -310,4 +312,8 @@ let g:deoplete#sources#rust#rust_source_path='$RUST_SRC_PATH'
 let g:deoplete#sources#rust#show_duplicates=1
 let g:deoplete#sources#rust#disable_keymap=1
 let g:deoplete#sources#rust#documentation_max_height=20
+
+let g:jedi#rename_command = "<leader>R"
+let g:jedi#popup_on_dot = 1
+autocmd FileType python let b:did_ftplugin = 1
 
