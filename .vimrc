@@ -17,64 +17,36 @@ if &compatible
   set nocompatible               " Be iMproved
 endif
 
-" Required:
-set runtimepath+=$HOME/.vim/bundles/repos/github.com/Shougo/dein.vim
+
+" plugins install dir
+let s:dein_dir = expand('$HOME/.vim/bundles')
+
+let s:dein_repo_dir =  s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
 " Required:
-if dein#load_state('$HOME/.vim/bundles')
-  call dein#begin('$HOME/.vim/bundles')
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+endif
+
+" Required:
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
 
   " Let dein manage dein
   " Required:
-  call dein#add('$HOME/.vim/bundles/repos/github.com/Shougo/dein.vim')
+  " call dein#add('$HOME/.vim/bundles/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
-  call dein#add('Shougo/vimshell')
-  call dein#add('fatih/vim-go')
-"  call dein#add('ctrlpvim/ctrlp.vim')
-  call dein#add('junegunn/fzf', { 'build': './install', 'merged': 0 })
-  call dein#add('junegunn/fzf.vim')
-  call dein#add('tomasr/molokai')
-"  call dein#add('plasticboy/vim-markdown')
-  call dein#add('Shougo/unite.vim')
+  let g:rc_dir = expand('$HOME/.vim/rc')
+  let s:toml   = g:rc_dir . '/dein.toml'
+  let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
 
-  call dein#add('scrooloose/nerdtree')
-  call dein#add('Xuyuanp/nerdtree-git-plugin')
-
-  if ((has('nvim')  || has('timers')) && has('python3')) && system('pip3 show neovim') !=# ''
-    call dein#add('Shougo/deoplete.nvim')
-    if !has('nvim')
-      call dein#add('roxma/nvim-yarp')
-      call dein#add('roxma/vim-hug-neovim-rpc')
-    endif
-  elseif has('lua')
-    call dein#add('Shougo/neocomplete.vim')
-  endif
-
-  call dein#add('Shougo/neco-vim')
-  call dein#add('Shougo/neco-syntax')
-  call dein#add('ujihisa/neco-look')
-
-  call dein#add('tyru/open-browser.vim')
-  call dein#add('kannokanno/previm')
-
-  call dein#add('thinca/vim-quickrun')
-
-
-  call dein#add('itchyny/lightline.vim')
-
-  call dein#add('vim-scripts/vcscommand.vim')
-
-  call dein#add('racer-rust/vim-racer')
-  call dein#add('rust-lang/rust.vim')
-  call dein#add('vim-syntastic/syntastic')
-  call dein#add('sebastianmarkow/deoplete-rust')
-  call dein#add('davidhalter/jedi-vim')
-
-
-  
+  " Read TOML and cached
+  call dein#load_toml(s:toml,      {'lazy':0})
+  call dein#load_toml(s:lazy_toml, {'lazy':1})
 
   " You can specify revision/branch/tag.
   " call dein#add('Shougo/deol.nvim', { 'rev': 'a1b5108fd' })
@@ -89,13 +61,15 @@ filetype plugin indent on
 syntax enable
 
 " If you want to install not installed plugins on startup.
-"if dein#check_install()
-"  call dein#install()
-"endif
+if dein#check_install()
+  call dein#install()
+endif
 
 "End dein Scripts-------------------------
 
 syntax on
+
+
 "文字コードをUFT-8に設定
 set fenc=utf-8
 " バックアップファイルを作らない
@@ -159,7 +133,7 @@ set hlsearch
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
 " 新しいwindowを下に
 "set splitbelow
-" Undoファイルを無効にする
+" No Undo file
 set noundofile
 
 
@@ -182,22 +156,28 @@ if has('gui_running')
   
 endif
 
+" color
 colorscheme molokai
 hi Comment ctermfg=102
 hi Visual  ctermbg=236
+" Change popup menu color for non selected items
+highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
+" Change popup menu color for selected item
+highlight PmenuSel ctermfg=white ctermbg=gray
+
+" color end
 
 " datetime
 inoremap <Leader>c <C-R>=strftime('%Y-%m-%dT%H:%M:%S+09:00')<CR>
 
+" for nerdtree
 map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-
 autocmd vimenter * NERDTree 
 autocmd vimenter * wincmd p
 
 " let NERDTreeQuitOnOpen = 1
-
+" nerdtree end
 
 " neosnippet
 " Plugin key-mappings.
@@ -222,7 +202,7 @@ if has('conceal')
 endif
 let g:neosnippet#snippets_directory='~/.vim/bundles/repos/github.com/Shougo/neosnippet-snippets/neosnippets'
 " neosnippet end
-"
+
 " quickrun
 let g:quickrun_config={'*': {'split': ''}}
 let g:quickrun_config._ = {
@@ -236,26 +216,12 @@ au FileType qf nnoremap <silent><buffer>q :quit<CR>
 
 set grepprg=grep\ -rnIH\ --exclude-dir=.svn\ --exclude-dir=.git
 autocmd QuickFixCmdPost *grep* cwindow
-
-nnoremap <expr> <Space>g ':vimgrep /\<' . expand('<cword>') . '\>/j **/*.' . expand('%:e')
-nnoremap <expr> <Space>G ':sil grep! ' . expand('<cword>') . ' *'
-
-
 "quickrun end
 
-"" ctrlp
-"let g:ctrlp_match_window = 'order:ttb,min:20,max:20,results:100' " マッチウインドウの設定. 「下部に表示, 大きさ20行で固定, 検索結果100件」
-"let g:ctrlp_show_hidden = 1 " .(ドット)から始まるファイルも検索対象にする
-"let g:ctrlp_types = ['fil'] "ファイル検索のみ使用
-"let g:ctrlp_max_depth = 60
-"let g:ctrlp_max_files  = 100000
-"" カレントディレクトリを基準に検索
-"nnoremap <silent> <Space>cf :CtrlPCurWD<CR>
-"" カレントバッファのルートディレクトリを基準に検索(root:自動認識)
-"nnoremap <silent> <Space>cF :CtrlPRoot<CR>
-"" 最近使ったファイルから検索
-"nnoremap <silent> <Space>cr :CtrlPMRUFiles<CR>
-"" ctrlp end
+" for grep shortcut
+nnoremap <expr> <Space>g ':vimgrep /\<' . expand('<cword>') . '\>/j **/*.' . expand('%:e')
+nnoremap <expr> <Space>G ':sil grep! ' . expand('<cword>') . ' *'
+" grep end
 
 " fzf
 nnoremap <C-p> :FZFFileList<CR>
@@ -268,6 +234,7 @@ augroup PrevimSettings
     autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 augroup END
 
+" fzf end
 nnoremap <C-]> g<C-]> 
 
 " for Tab
@@ -290,7 +257,9 @@ map <silent> [Tag]p :tabprevious<CR>
 " tp 前のタブ
 " Tab End
 
+" ctags
 set tags=./tags;
+" ctags end
 
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_ignore_case = 1
@@ -300,25 +269,21 @@ if !exists('g:neocomplete#keyword_patterns')
 endif
 let g:neocomplete#keyword_patterns._ = '\h\w*'
 
-highlight Pmenu ctermbg=248 guibg=#606060
-highlight PmenuSel ctermbg=159 guifg=#dddd00 guibg=#1f82cd
-highlight PmenuSbar ctermbg=0 guibg=#d6d6d6
 
 " rust start
-let g:racer_cmd = "$HOME/.cargo/bin/racer"
-let g:rustfmt_autosave = 1
-let g:rustfmt_command = '$HOME/.cargo/bin/rustfmt'
+" let g:racer_cmd = "$HOME/.cargo/bin/racer"
+" let g:rustfmt_autosave = 1
+" let g:rustfmt_command = '$HOME/.cargo/bin/rustfmt'
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['rust'] }
 let g:syntastic_rust_checkers = ['rustc', 'cargo']
 
-let g:deoplete#sources#rust#racer_binary='$HOME/.cargo/bin/racer'
-let g:deoplete#sources#rust#rust_source_path='$RUST_SRC_PATH'
+" let g:deoplete#sources#rust#racer_binary='$HOME/.cargo/bin/racer'
+" let g:deoplete#sources#rust#rust_source_path='$RUST_SRC_PATH'
+" let g:deoplete#sources#rust#show_duplicates=1
+" let g:deoplete#sources#rust#disable_keymap=1
+" let g:deoplete#sources#rust#documentation_max_height=20
 
-let g:deoplete#sources#rust#show_duplicates=1
-let g:deoplete#sources#rust#disable_keymap=1
-let g:deoplete#sources#rust#documentation_max_height=20
-
-let g:jedi#rename_command = "<leader>R"
-let g:jedi#popup_on_dot = 1
-autocmd FileType python let b:did_ftplugin = 1
+" let g:jedi#rename_command = "<leader>R"
+" let g:jedi#popup_on_dot = 1
+" autocmd FileType python let b:did_ftplugin = 1
 
