@@ -34,7 +34,7 @@ repo = 'plasticboy/vim-markdown'
 [[plugins]]
 # golang
 repo = 'fatih/vim-go'
-on_ft = ['go']
+on_ft = 'go'
 
 [[plugins]]
 # rust Utility
