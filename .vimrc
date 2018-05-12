@@ -269,6 +269,8 @@ if !exists('g:neocomplete#keyword_patterns')
 endif
 let g:neocomplete#keyword_patterns._ = '\h\w*'
 
+" Use deoplete.
+" let g:deoplete#enable_at_startup = 1
 
 " rust start
 " let g:racer_cmd = "$HOME/.cargo/bin/racer"
