@@ -66,6 +66,11 @@ let g:jedi#popup_on_dot = 1
 autocmd FileType python let b:did_ftplugin = 1
 '''
 
+[[plugins]]
+# neco
+repo = 'Shougo/neocomplete.vim'
+on_i = 1
+
 # [[plugins]]
 # repo = 'roxma/nvim-yarp'
 # on_if = '!has("nvim")'

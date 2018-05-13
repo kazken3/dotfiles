@@ -52,19 +52,19 @@ repo = 'vim-scripts/vcscommand.vim'
 [[plugins]]
 repo = 'vim-syntastic/syntastic'
 
-[[plugins]]
-repo = 'roxma/nvim-yarp'
-on_if = '!has("nvim")'
-
-[[plugins]]
-repo = 'roxma/vim-hug-neovim-rpc'
-on_if = '!has("nvim")'
-
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-depends = ['context_filetype.vim', 'nvim-yarp', 'vim-hug-neovim-rpc']
-hook_add = '''
-    let g:deoplete#enable_at_startup = 1
-'''
-## let g:deoplete#enable_at_startup = 1
-## let g:deoplete#enable_smart_case = 1
+#[[plugins]]
+#repo = 'roxma/nvim-yarp'
+#on_if = '!has("nvim")'
+#
+#[[plugins]]
+#repo = 'roxma/vim-hug-neovim-rpc'
+#on_if = '!has("nvim")'
+#
+#[[plugins]]
+#repo = 'Shougo/deoplete.nvim'
+#depends = ['context_filetype.vim', 'nvim-yarp', 'vim-hug-neovim-rpc']
+#hook_add = '''
+#    let g:deoplete#enable_at_startup = 1
+#'''
+### let g:deoplete#enable_at_startup = 1
+### let g:deoplete#enable_smart_case = 1
