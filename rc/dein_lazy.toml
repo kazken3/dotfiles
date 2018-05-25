@@ -9,6 +9,7 @@ repo = 'Shougo/unite.vim'
 [[plugins]]
 # unite mru
 repo = 'Shougo/neomru.vim'
+depends = 'Shougo/unite.vim'
 
 [[plugins]]
 #exec snippets
@@ -100,3 +101,4 @@ on_i = 1
 # '''
 # # let g:deoplete#enable_at_startup = 1
 # # let g:deoplete#enable_smart_case = 1
+
