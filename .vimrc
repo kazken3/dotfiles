@@ -248,17 +248,44 @@ nnoremap <expr> <Space>G ':sil grep! ' . expand('<cword>') . ' *'
 " grep end
 
 " fzf
+  
 nnoremap <C-p> :FZFFileList<CR>
 command! FZFFileList call fzf#run({
             \ 'source': 'find . -type d -name .git -prune -o ! -name .DS_Store -o ! -name .svn',
-            \ 'sink': 'e'})
+            \ 'sink': 'tabedit'})
+" for FZF(not ctrl+p)
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+let  g:fzf_history_dir = '~/.local/share/fzf-history'
+" Usage:
+"   fzf#wrap([name string,] [opts dict,] [fullscreen boolean])
 
+" This command now supports CTRL-T, CTRL-V, and CTRL-X key bindings
+" and opens fzf according to g:fzf_layout setting.
+command! Buffers call fzf#run(fzf#wrap(
+    \ {'source': map(range(1, bufnr('$')), 'bufname(v:val)')}))
+
+" This extends the above example to open fzf in fullscreen
+" when the command is run with ! suffix (Buffers!)
+command! -bang Buffers call fzf#run(fzf#wrap(
+    \ {'source': map(range(1, bufnr('$')), 'bufname(v:val)')}, <bang>0))
+
+" You can optionally pass the name of the command as the first argument to
+" fzf#wrap to make it work with g:fzf_history_dir
+command! -bang Buffers call fzf#run(fzf#wrap('buffers',
+    \ {'source': map(range(1, bufnr('$')), 'bufname(v:val)')}, <bang>0))
+" new tab
+let g:fzf_layout = { 'window': '-tabnew' }
+
+" fzf end
+"
 augroup PrevimSettings
     autocmd!
     autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 augroup END
 
-" fzf end
 nnoremap <C-]> g<C-]> 
 
 " for Tab
@@ -392,9 +419,4 @@ let g:syntastic_rust_checkers = ['rustc', 'cargo']
 " let g:jedi#rename_command = "<leader>R"
 " let g:jedi#popup_on_dot = 1
 " autocmd FileType python let b:did_ftplugin = 1
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-let g:fzf_history_dir = '~/.local/share/fzf-history'
 
