@@ -198,6 +198,8 @@ function! CheckLeftBuffers()
 endfunction
 autocmd BufEnter * call CheckLeftBuffers()
 
+map <leader>f :NERDTreeFind<cr>
+
 " let NERDTreeQuitOnOpen = 1
 " nerdtree end
 
@@ -281,6 +283,8 @@ map <silent> [Tag]p :tabprevious<CR>
 
 " ctags
 set tags=./tags;
+" set fileformats = unix,mac,dos
+" set fileencodings = utf-8,sjis
 " ctags end
 
 " neocomplete
