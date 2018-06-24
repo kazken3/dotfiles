@@ -42,6 +42,11 @@ repo = 'fatih/vim-go'
 on_ft = 'go'
 
 [[plugins]]
+# JSON
+repo = 'elzr/vim-json'
+on_ft = 'json'
+
+[[plugins]]
 # rust Utility
 repo = 'rust-lang/rust.vim'
 on_ft = 'rust'
