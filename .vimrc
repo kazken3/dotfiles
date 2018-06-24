@@ -1,3 +1,10 @@
+if has('vim_starting')
+ set nocompatible               " Be iMproved
+endif
+
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
+
 if has('gui_macvim')
  let g:macvim_skip_colorscheme=1
  let g:no_gvimrc_example=1
