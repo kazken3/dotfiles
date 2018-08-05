@@ -28,3 +28,5 @@ source $HOME/.cargo/env
 export PATH="$HOME/.cargo/bin:$PATH"
 export RUST_SRC_PATH='/home/kazken/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
 export WINEPREFIX=~/.wine
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
