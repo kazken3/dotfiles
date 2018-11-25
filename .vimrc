@@ -124,7 +124,8 @@ set expandtab
 set tabstop=2
 " 行頭でのTab文字の表示幅
 set shiftwidth=2
-
+" 最大タブ数
+set tabpagemax=20
 
 " 検索文字列が小文字の場合は大文字小文字を区別なく検索する
 set ignorecase
@@ -443,4 +444,24 @@ let g:syntastic_rust_checkers = ['rustc', 'cargo']
 " let g:jedi#rename_command = "<leader>R"
 " let g:jedi#popup_on_dot = 1
 " autocmd FileType python let b:did_ftplugin = 1
+let g:vdebug_options= {
+\    "port" : 9001,
+\    "server" : '',
+\    "timeout" : 20,
+\    "on_close" : 'detach',
+\    "break_on_open" : 1,
+\    "ide_key" : '',
+\    "path_maps" : {},
+\    "debug_window_level" : 0,
+\    "debug_file_level" : 0,
+\    "debug_file" : "",
+\    "watch_window_style" : 'expanded',
+\    "marker_default" : '⬦',
+\    "marker_closed_tree" : '▸',
+\    "marker_open_tree" : '▾'
+\}
+
+
+let g:vdebug_options['path_maps'] = {"/var/www/html/monthly": "/Users/kazuhama-k/thai/honda/01.Server/MonitoringServerSetting/src/root/var/www/html/monthly"}
+
 
