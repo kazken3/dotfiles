@@ -30,3 +30,7 @@ export RUST_SRC_PATH='/home/kazken/.multirust/toolchains/stable-x86_64-unknown-l
 export WINEPREFIX=~/.wine
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+export PIPENV_VENV_IN_PROJECT=true
+eval "$(pipenv --completion)"
+export GST_ID3_TAG_ENCODING='CP932'
+export PATH="$HOME/.local/bin:$PATH"
