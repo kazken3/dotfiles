@@ -26,11 +26,11 @@ export PATH=$HOME/work/review/bin:$HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/
 
 source $HOME/.cargo/env
 export PATH="$HOME/.cargo/bin:$PATH"
-export RUST_SRC_PATH='/home/kazken/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
+export RUST_SRC_PATH="$HOME/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
 export WINEPREFIX=~/.wine
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 export PIPENV_VENV_IN_PROJECT=true
 eval "$(pipenv --completion)"
 export GST_ID3_TAG_ENCODING='CP932'
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/Library/Python/3.7/bin:$HOME/.local/bin:$PATH"
