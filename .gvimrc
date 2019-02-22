@@ -296,4 +296,4 @@ endif
 " MacVim-KaoriYa固有の設定
 "
 set noimdisable
-set imdisableactivate
+" set imdisableactivate
